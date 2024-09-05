@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字</title>
+</head>
+<body>
+    <script src="./js/jquery.min.js"></script>
+
+    <button id="again">重新开始一局游戏</button><br>
+    <span>请输入要猜的数字：</span> 
+    <input type="text" name="guessNumber" id="guessNumber">
+    <button id="guessButton">猜</button></br>
+    <span>已经猜的次数：</span><span id="count"></span></br>
+    <span>结果：</span><span id="result"></span>
+
+    <script>
+        // 随机生成一个数字
+        var randNum = Math.floor(Math.random()*100) + 1; //生成一个0-99的随机数之后+1 =》 1-100 
+        var count = 0;
+        console.log(randNum);
+        // 重新开始一局游戏 按钮
+        $("#again").click(function(){
+            //清空所有的输入和次数以及结果
+            count = 0;
+            $("#count").text(count);
+            $("#guessNumber").val("");
+            $("#result").text("");
+            // 生成新的随机数
+            randNum = Math.floor(Math.random()*100) + 1;
+            console.log(randNum);
+            
+        });
+        // 猜按钮 判断
+        $("#guessButton").click(function(){
+            count++;
+            $("#count").text(count);
+            // 拿到用户输入的数字
+            var userGuessNum = $("#guessNumber").val();
+            if(userGuessNum > randNum){
+                // 猜大了
+                $("#result").text("猜大了！");
+                $("#result").css("color","red");
+            }else if(userGuessNum < randNum){
+                // 猜小了
+                $("#result").text("猜小了！");
+                $("#result").css("color","red");
+            }else{
+                //猜对了
+                $("#result").text("猜对了！");
+                $("#result").css("color","green");
+            }
+        });
+    </script>
+</body>
+</html>
