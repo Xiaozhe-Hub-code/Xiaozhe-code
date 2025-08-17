@@ -1,0 +1,21 @@
+server:
+  port: 9393
+spring:
+  application:
+    name: spring-ai-bot
+# 阿里云百炼平台
+  ai:
+    dashscope:
+      api-key: sk-103cf1188da14dcd8db10e9101e34944
+      chat:
+        options:
+          model: qwen-plus #模型名称
+          temperature: 1
+          enable-search: true
+
+
+logging:
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS
+  level:
+    org.springframework.ai.chat.client.advisor: debug

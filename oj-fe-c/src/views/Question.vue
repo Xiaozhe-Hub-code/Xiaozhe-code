@@ -53,11 +53,12 @@
                     <div class="title"><img width="96px" height="24px" src="@/assets/rebang.png" alt=""></div>
                     <div class="hot-list">
                         <div class="list-item" v-for="(item, index) in hotQuestionList" :key="'hot_' + index">
-                            <img class="index-box" v-if="index == 0" src="@/assets/images/icon_1.png" alt="">
-                            <img class="index-box" v-if="index == 1" src="@/assets/images/icon_2.png" alt="">
-                            <img class="index-box" v-if="index == 2" src="@/assets/images/icon_3.png" alt="">
+                            <img class="index-box" v-if="index == 0" src="@/assets/images/icon_1.png" alt="aaa">
+                            <img class="index-box" v-if="index == 1" src="@/assets/images/icon_2.png" alt="bbb">
+                            <img class="index-box" v-if="index == 2" src="@/assets/images/icon_3.png" alt="ccc">
                             <span class="index-box" v-if="index > 2">{{ index + 1 }}</span>
                             <span class="txt" :title="item.title">{{ item.title }}</span>
+                            <span class="question-id">{{ item }}</span>
                         </div>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
 <script setup>
 import { reactive, ref } from "vue"
 import Selector from "@/components/QuestionSelector.vue"
-import { getQuestionListService } from '@/apis/question'
+import { getQuestionListService ,getHotQuestionListService} from '@/apis/question'
 import { getToken } from "@/utils/cookie"
 import router from "@/router"
 import { getUserInfoService } from "@/apis/user"
@@ -100,13 +101,16 @@ async function getQuestionList() {
 }
 getQuestionList()
 
-// const hotQuestionList = ref([])
-// async function getHotQuestionList(params) {
-//     const hotRef = await getHotQuestionListService()
-//     hotQuestionList.value = hotRef.data
-// }
+const hotQuestionList = ref([])
+async function getHotQuestionList(params) {
+    const hotRef = await getHotQuestionListService(5)
 
-// getHotQuestionList()
+    console.log("hotRef:",hotRef);
+    
+    hotQuestionList.value = hotRef.data
+}
+
+getHotQuestionList()
 
 // 搜索/重置
 function onSearch() {

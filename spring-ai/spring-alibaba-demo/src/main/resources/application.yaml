@@ -1,0 +1,14 @@
+server:
+  port: 9292
+spring:
+  ai:
+    dashscope:
+      api-key: sk-103cf1188da14dcd8db10e9101e34944
+      chat:
+        options:
+          model: qwen-vl-max-latest #模型名称
+          multi-model: true #是否启⽤多模型
+
+  application:
+    name: spring-alibaba-demo
+

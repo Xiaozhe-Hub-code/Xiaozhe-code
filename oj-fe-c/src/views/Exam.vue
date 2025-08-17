@@ -1,6 +1,6 @@
 <template>
     <div class="exam-page flex-col">
-        <div class="exam-selected-section flex-col">
+        <div class="exam-selected-section flex-col" >
             <div class="exam-option-group flex-row justify-between">
                 <div class="exam-option" v-for="option in options" :key="option.value"
                     @click="selectOption(option.value)" :class="{ selected: selectedOption === option.value }">
@@ -12,7 +12,7 @@
                 <span class="exam-list-title">推荐竞赛</span>
                 <el-form inline="true" class="exam-navigation flex-row justify-between">
                     <el-form-item label="竞赛时间" prop="datetimerange" class="exam-navigation-box">
-                        <el-date-picker style="width:360px;" v-model="params.datetimerange" type="datetimerange"
+                        <el-date-picker style="width:360px;" v-model="datetimeRange" type="datetimerange"
                             range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
                     </el-form-item>
                     <el-form-item>
@@ -80,13 +80,14 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { getExamListService, enterExamService, getExamRankListService } from '@/apis/exam'
+import { getExamListService, enterExamService, getExamRankListService ,examListByTimeService} from '@/apis/exam'
 import { getToken } from '@/utils/cookie'
 import { getUserInfoService } from '@/apis/user'
 import router from '@/router';
+import { dayjs } from 'element-plus';
 
 //参数定义
-const examList = ref([]) //题目列表
+const examList = ref([]) // 竞赛列表
 const total = ref(0)
 const selectedOption = ref(0); // 初始化选中的文本
 const options = ref([
@@ -96,8 +97,11 @@ const options = ref([
 const params = reactive({
     pageNumber: 1,
     pageSize: 9,
+    startTime: '',
+    endTime: '',
     type: 0
 })
+const datetimeRange = ref([])
 
 //竞赛列表
 async function getExamList() {
@@ -114,16 +118,32 @@ async function selectOption(type) {
     getExamList()
 }
 
+async function getListByTime() {
+    if (datetimeRange.value[0] instanceof Date) {
+        params.startTime = dayjs(datetimeRange.value[0].toLocaleString()).format("YYYY-MM-DDTHH:mm:ss");
+    }
+    if (datetimeRange.value[1] instanceof Date) {
+        params.endTime = dayjs(datetimeRange.value[1].toLocaleString()).format("YYYY-MM-DDTHH:mm:ss");
+    }
+    console.log("params",params)
+    const result = await examListByTimeService(params)
+    examList.value = result.rows
+    total.value = result.total
+}
+
 // 搜索/重置
 function onSearch() {
-    params.value.pageNumber = 1
-    getExamList()
+    getListByTime()
+    params.pageNumber = 1
 }
 
 function onReset() {
-    params.pageNumber = 1
-    params.pageSize = 9
-    params.type = 0
+    params.pageNumber=1,
+    params.pageSize = 9,
+    params.startTime = '',
+    params.endTime = '',
+    params.type = selectedOption.value
+    console.log(params)
     getExamList()
 }
 

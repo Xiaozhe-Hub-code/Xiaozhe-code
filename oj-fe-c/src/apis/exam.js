@@ -55,3 +55,11 @@ export function examNextQuestionService(examId, questionId) {
         params: { examId, questionId },
     });
 }
+
+export function examListByTimeService(params) {
+    return service({
+        url: "/exam/semiLogin/listByTime",
+        method: "get",
+        params,
+    })
+}

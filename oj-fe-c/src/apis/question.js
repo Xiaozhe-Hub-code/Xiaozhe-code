@@ -8,12 +8,13 @@ export function getQuestionListService(params) {
     });
 }
 
-// export function getHotQuestionListService() {
-//     return service({
-//         url: "/question/semiLogin/hotList",
-//         method: "get"
-//     });
-// }
+export function getHotQuestionListService(size) {
+    return service({
+        url: "/question/semiLogin/hotList",
+        method: "get",
+        params: { size },
+    });
+}
 
 export function getQuestionDetailService(questionId) {
     return service({
